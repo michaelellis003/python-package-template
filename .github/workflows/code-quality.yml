@@ -20,12 +20,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Install uv and dependencies for specific groups
-      - name: Setup uv Environment
-        uses: michaelellis003/python-package-custom-actions/setup-uv@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-          dependency-group: 'code-quality'
+      # Install project dependencies needed for code quality checks
+      - name: Install code quality checks dependencies
+        run: |
+        pip install --upgrade pip
+        pip install .[code-quality]
           
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
