@@ -22,7 +22,7 @@ jobs:
 
       # Install uv and dependencies for specific groups
       - name: Setup uv Environment
-        uses: michaelellis003/python-package-custom-actions/setup-uv@v1
+        uses: michaelellis003/python-package-custom-actions/setup-uv@v2
         with:
           python-version: ${{ matrix.python-version }}
           dependency-group: 'code-quality'
