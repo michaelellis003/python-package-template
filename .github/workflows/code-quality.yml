@@ -5,10 +5,11 @@ on:
     branches:
       - main
 
+shell: bash
+
 jobs:
   code-quality-checks:
     runs-on: ubuntu-latest
-    shell: bash
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
