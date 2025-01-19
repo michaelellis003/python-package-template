@@ -25,7 +25,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install code quality checks dependencies
-        run: pip install .[code-quality]
+        run: pip install -e '.[code-quality]''
 
       - name: Check env
         run: pip list
