@@ -26,6 +26,9 @@ jobs:
 
       - name: Install code quality checks dependencies
         run: pip install .[code-quality]
-          
+
+      - name: Check env
+        run: pip list
+        
       - name: Run pre-commit
-        run: uv run pre-commit run --all-files
+        run: pre-commit run --all-files
