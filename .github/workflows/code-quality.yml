@@ -21,14 +21,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       # Install project dependencies needed for code quality checks
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
-
-      - name: Install code quality checks dependencies
-        run: pip install --no-deps .[code_checks]
-
-      - name: Check env
-        run: pip list
-        
+      - name: Install code quality checks
+        uses: michaelellis003/python-package-custom-actions/setup-uv@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          dependency-group: 'code-checks'
+          
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        run: uv run pre-commit run --all-files
