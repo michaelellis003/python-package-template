@@ -24,7 +24,6 @@ jobs:
       - name: Install code quality checks
         uses: michaelellis003/python-package-custom-actions/setup-uv@v2
         with:
-          python-version: ${{ matrix.python-version }}
           dependency-group: 'code-checks'
           
       - name: Run pre-commit
