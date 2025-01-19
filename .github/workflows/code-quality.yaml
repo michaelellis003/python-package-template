@@ -20,13 +20,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Install Poetry and dependencies for specific groups
-      - name: Setup Poetry Environment
-        uses: michaelellis003/python-package-custom-actions/setup-poetry@v1
+      # Install uv and dependencies for specific groups
+      - name: Setup uv Environment
+        uses: michaelellis003/python-package-custom-actions/setup-uv@v1
         with:
           python-version: ${{ matrix.python-version }}
-          poetry-version: '2.0.0'
-          dependency-group: 'testing'
+          dependency-group: 'code-quality'
           
       - name: Run pre-commit
         run: poetry run pre-commit run --all-files
