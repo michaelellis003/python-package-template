@@ -8,6 +8,7 @@ on:
 jobs:
   code-quality-checks:
     runs-on: ubuntu-latest
+    shell: bash
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
@@ -25,7 +26,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install code quality checks dependencies
-        run: pip install -e '.[code-quality]'
+        run: pip install .[code_checks]
 
       - name: Check env
         run: pip list
