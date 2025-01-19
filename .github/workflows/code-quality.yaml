@@ -28,4 +28,4 @@ jobs:
           dependency-group: 'code-quality'
           
       - name: Run pre-commit
-        run: poetry run pre-commit run --all-files
+        run: uv run pre-commit run --all-files
