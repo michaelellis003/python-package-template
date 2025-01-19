@@ -1,0 +1,32 @@
+name: Test Python Code Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  code-quality-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install Poetry and dependencies for specific groups
+      - name: Setup Poetry Environment
+        uses: michaelellis003/python-package-custom-actions/setup-poetry@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: '2.0.0'
+          dependency-group: 'testing'
+          
+      - name: Run pre-commit
+        run: poetry run pre-commit run --all-files
