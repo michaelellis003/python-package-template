@@ -19,14 +19,13 @@ jobs:
         - name: Setup uv
           uses: ./.github/actions/setup-uv
 
-        - name: Show current version          
-          run: uv version
+        - name: get version
+          run: |
+            VERSION=$(uvx --from=toml-cli toml get project.version \
+                    --toml-path pyproject.toml)
 
         - name: Bump version
-          run: |
-            VERSION=$(uvx dunamai from any --no-metadata --style semver)
-            uvx --from=toml-cli toml set --toml-path=pyproject.toml \
-                    project.version $VERSION
+          run: echo "Retrieved version ${VERSION} from pyproject.toml"
 
         - name: Create and push tag
           run: |
