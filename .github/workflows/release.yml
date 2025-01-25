@@ -5,13 +5,6 @@ on:
   workflow_run:
     workflows: ["CI"]      # Must match the name: "CI"
     types: [ "completed" ]
-  # Optional: also allow manual dispatch
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: "Semantic version type to bump (patch, minor, major)"
-        required: false
-        default: "patch"
 
 jobs:
   release:
@@ -23,28 +16,11 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v4
     
-        # need to use poetry to bump version since uv doesn't support it
-        - name: Install poetry
-          run: |
-                pipx install poetry
-                poetry self add poetry-pep621-version 
+        - name: Setup uv
+          uses: ./.github/actions/setup-uv
 
         - name: Show current version          
-          run: poetry version
-
-        - name: Bump version
-          run: poetry version ${{ github.event.inputs.release_type }}
-
-        - name: Show new version
-          run: poetry version
-
-        - name: Commit version bump
-          run: |
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add pyproject.toml
-            git commit -m "Bump version [skip ci]"
-            git push
+          run: uv version
 
         - name: Create and push tag
           run: |
