@@ -31,7 +31,7 @@ jobs:
           run: poetry version
 
         - name: Bump version
-          run: poetry version bump ${{ github.event.inputs.release_type }}
+          run: poetry version ${{ github.event.inputs.release_type }}
 
         - name: Show new version
           run: poetry version
