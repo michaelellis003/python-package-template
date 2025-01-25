@@ -1,7 +1,7 @@
 name: Python Code Quality
 on: [push]
 jobs:
-  code_quality:
+  lint_and_format_code:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,7 +15,7 @@ jobs:
   
   pytest:
     runs-on: ubuntu-latest
-    needs: [code_quality]
+    needs: [lint_and_format_code]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
