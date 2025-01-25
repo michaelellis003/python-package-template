@@ -11,4 +11,4 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: pre-commit code quality checks
-        uses: pre-commit/action@v3
+        uses: pre-commit/action@v3.0.1
