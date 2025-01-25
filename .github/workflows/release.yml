@@ -25,7 +25,7 @@ jobs:
                     --toml-path pyproject.toml)
 
         - name: Bump version
-          run: echo "Retrieved version ${VERSION} from pyproject.toml"
+          run: echo "Retrieved version $VERSION from pyproject.toml"
 
         - name: Create and push tag
           run: |
