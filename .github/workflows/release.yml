@@ -25,7 +25,9 @@ jobs:
     
         # need to use poetry to bump version since uv doesn't support it
         - name: Install poetry
-          run: pipx install poetry # Show current version          
+          run: |
+                pipx install poetry
+                poetry self add poetry-pep621-version 
 
         - name: Show current version          
           run: poetry version
