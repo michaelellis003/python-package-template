@@ -23,6 +23,9 @@ jobs:
       - name: Setup uv
         uses: ./.github/actions/setup-uv
 
+      - name: Create a new virtual environment
+        run: uv venv
+
       - name: install package
         run: uv pip install .
 
