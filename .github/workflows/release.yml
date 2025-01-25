@@ -31,7 +31,7 @@ jobs:
           run: poetry version
 
         - name: Bump version
-          run: poetry version ${{ github.event.inputs.release_type }}
+          run: poetry version bump ${{ github.event.inputs.release_type }}
 
         - name: Show new version
           run: poetry version
@@ -51,7 +51,7 @@ jobs:
             git push origin "v${VERSION}"
         
         - name: Update major version tag
-        run: |
+          run: |
             VERSION=$(uv version show --raw)
             MAJOR=$(echo "$VERSION" | cut -d. -f1)    # e.g. "1" for 1.2.3
             # Force-update v1 to point to the same commit as v1.2.3
