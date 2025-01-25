@@ -14,4 +14,4 @@ jobs:
         run: ls -a
 
       - name: pre-commit code quality checks
-        run: pre-commit run
+        run: uvx pre-commit run
