@@ -1,5 +1,7 @@
 name: Release
-
+permissions:
+ contents: write  # For tag/push operations
+ 
 on:
   # This triggers whenever the "CI" workflow completes
   workflow_run:
