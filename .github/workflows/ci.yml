@@ -2,12 +2,6 @@ name: CI
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: "Semantic version type to bump (patch, minor, major)"
-        required: false
-        default: "patch"
 
 jobs:
   # ----------------------------------------------------------------
