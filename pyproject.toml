@@ -16,6 +16,17 @@ python-package-template = "python_package_template:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.sdist]
+include = [
+  "src",
+]
+
+[tool.hatch.build.targets.wheel]
+# The path to the directory that contains your actual package code.
+packages = [
+  "src/python_package_template"
+]
+
 [dependency-groups]
 dev = [
     "pyright>=1.1.392.post0",
