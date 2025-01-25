@@ -20,27 +20,40 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        - name: Checkout code
+        - uses: actions/checkout@v4
+    
+        # need to use poetry to bump version since uv doesn't support it
+        - name: Install poetry
+          run: pipx install poetry # Show current version          
+
+        - name: Show current version          
+          run: poetry version
+
+        - name: Bump version
+          run: poetry version ${{ github.event.inputs.release_type }}
+
+        - name: Show new version
+          run: poetry version
+
+        - name: Commit version bump
+          run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add pyproject.toml
+            git commit -m "Bump version [skip ci]"
+            git push
+
+        - name: Create and push tag
+          run: |
+            VERSION=$(uv version show --raw)
+            git tag "v${VERSION}"
+            git push origin "v${VERSION}"
         
-      - name: Setup uv
-        uses: ./.github/actions/setup-uv
-
-      - name: Bump version
+        - name: Update major version tag
         run: |
-          RELEASE_TYPE="${{ github.event.inputs.release_type || 'patch' }}"
-          uv version "$RELEASE_TYPE"
-
-      - name: Commit version bump
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add pyproject.toml
-          git commit -m "Bump version [skip ci]"
-          git push
-
-      - name: Create and push tag
-        run: |
-          VERSION=$(uv version show --raw)
-          git tag "v${VERSION}"
-          git push origin "v${VERSION}"
+            VERSION=$(uv version show --raw)
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)    # e.g. "1" for 1.2.3
+            # Force-update v1 to point to the same commit as v1.2.3
+            git tag -fa "v${MAJOR}" -m "Update v${MAJOR} tag to v${VERSION}"
+            git push --force origin "v${MAJOR}"
