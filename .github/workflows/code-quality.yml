@@ -10,5 +10,8 @@ jobs:
       - name: Setup uv
         uses: ./.github/actions/setup
 
+      - name: inspect
+        run: ls -a
+
       - name: pre-commit code quality checks
         uses: pre-commit/action@v3.0.1
