@@ -1,7 +1,7 @@
 name: Release
 permissions:
  contents: write  # For tag/push operations
- 
+
 on:
   # This triggers whenever the "CI" workflow completes
   workflow_run:
@@ -31,18 +31,12 @@ jobs:
           env:
             VERSION: ${{ env.VERSION }}
 
-        - name: Configure Git
-          run: |
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "github-actions[bot]"
-
         - name: Create and push tag
           run: |
             git tag "v${VERSION}"
             git push origin "v${VERSION}"
           env:
             VERSION: ${{ env.VERSION }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
         - name: Update major version tag
           run: |
@@ -51,4 +45,3 @@ jobs:
             git push --force origin "v${MAJOR}"
           env:
             VERSION: ${{ env.VERSION }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
