@@ -7,11 +7,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup uv
-        uses: ./.github/actions/setup
-
-      - name: inspect
-        run: ls -a
+      - name: install uv
+       run: |
+         curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: pre-commit code quality checks
         run: uvx pre-commit run
