@@ -1,7 +1,19 @@
 name: Python Code Quality
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Semantic version type to bump (patch, minor, major)"
+        required: false
+        default: "patch"
+
 jobs:
-  lint_and_format_code:
+  # ----------------------------------------------------------------
+  # 1) Code Quality (Ruff / pre-commit) lint, format, pyright checks
+  # ----------------------------------------------------------------
+  ruff:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -13,9 +25,12 @@ jobs:
       - name: pre-commit code quality checks
         run: uvx pre-commit run
   
+  # ----------------------------------------------------------------
+  # 2) Run pytest unit tests
+  # ----------------------------------------------------------------
   pytest:
     runs-on: ubuntu-latest
-    needs: [lint_and_format_code]
+    needs: [ruff]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,3 +51,48 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ----------------------------------------------------------------
+  # 3) Version, Tag, Build, (Optionally) Publish
+  # ----------------------------------------------------------------
+  release:
+    runs-on: ubuntu-latest
+    needs: [pytest]
+    # Limit automatic release steps to pushes on main, or let workflow_dispatch trigger it
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup uv
+        uses: ./.github/actions/setup-uv
+
+      # -----------------------------------------------------
+      # Step A: Choose Release Type & Bump Version
+      # -----------------------------------------------------
+      - name: Bump version
+        run: |
+          # We'll take the 'release_type' from workflow_dispatch if it exists,
+          # otherwise default to 'patch'.
+          RELEASE_TYPE="${{ github.event.inputs.release_type || 'patch' }}"
+          uv version "$RELEASE_TYPE"
+
+      # -----------------------------------------------------
+      # Step B: Commit and push updated version
+      # -----------------------------------------------------
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pyproject.toml
+          git commit -m "Bump version [skip ci]"
+          git push
+
+      # -----------------------------------------------------
+      # Step C: Create & push GitHub tag
+      # -----------------------------------------------------
+      - name: Create and push tag
+        run: |
+          VERSION=$(uv version show --raw)
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
