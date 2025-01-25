@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  # This triggers whenever the "CI" workflow completes
+  workflow_run:
+    workflows: ["CI"]      # Must match the name: "CI"
+    types: [ "completed" ]
+  # Optional: also allow manual dispatch
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Semantic version type to bump (patch, minor, major)"
+        required: false
+        default: "patch"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # Only proceed if the CI workflow ended in success
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup uv
+        uses: ./.github/actions/setup-uv
+
+      - name: Bump version
+        run: |
+          RELEASE_TYPE="${{ github.event.inputs.release_type || 'patch' }}"
+          uv version "$RELEASE_TYPE"
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pyproject.toml
+          git commit -m "Bump version [skip ci]"
+          git push
+
+      - name: Create and push tag
+        run: |
+          VERSION=$(uv version show --raw)
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
