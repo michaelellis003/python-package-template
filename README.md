@@ -5,6 +5,7 @@ This is a template repository for building and maintaining a simple Python packa
 ## Features
 - [uv](https://docs.astral.sh/uv/) for python package management.
 - [Pre-commit hooks](https://pre-commit.com) to run automated quality checks, including [Ruff](https://docs.astral.sh/ruff/) for linting and formatting, and [Pyright](https://github.com/microsoft/pyright) for static type checking.
+- [Pytest](https://docs.pytest.org/en/stable/) for code testing.
 - Github Actions for CI/CD
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
