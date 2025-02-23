@@ -4,7 +4,7 @@ It provides basic functions for demonstration purposes.
 """
 
 
-def hello(name: str = "world") -> str:
+def hello(name: str = 'world') -> str:
     """Return a greeting string.
 
     Args:
@@ -13,7 +13,7 @@ def hello(name: str = "world") -> str:
     Returns:
         str: The greeting string.
     """
-    return f"Hello {name}"
+    return f'Hello {name}'
 
 
 def add(a: int, b: int) -> int:

@@ -5,7 +5,7 @@ from python_package_template import add, hello, multiply
 
 def test_hello():
     """Test the hello function."""
-    assert hello("World!") == "Hello World!"
+    assert hello('World!') == 'Hello World!'
 
 
 def test_add():
