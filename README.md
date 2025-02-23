@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/michaelellis003/python-package-template/graph/badge.svg?token=TUKP19SKJ3)](https://codecov.io/gh/michaelellis003/python-package-template)
 [![License](https://img.shields.io/github/license/michaelellis003/python-package-template)](https://github.com/michaelellis003/python-package-template/blob/main/LICENSE)
 
-The `python-package-template` repository offers a robust template for creating Python packages. It incorporates best practices for project structure, dependency management, testing, and continuous integration, enabling developers to quickly set up and maintain high-quality Python projects.
+The `python-package-template` repository offers a robust template for creating Python packages. It incorporates best practices for project structure, dependency management, testing, and CI/CD, enabling developers to quickly set up and maintain high-quality Python projects.
 
 ## Table of Contents
 1. [Features](#features)  
